@@ -36,7 +36,7 @@ class TaskController extends Controller
            'completed' => 'required|boolean',
        ]);
        $task = Task::create($validatedData);
-       return response()->json($task);
+       return response()->json($task, 201);
     }
 
     /**
@@ -44,7 +44,11 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        if(!$id) {
+            return response()->json('Task not found', 404);
+        }
+        return response()->json($task, 200);
     }
 
     /**
@@ -60,7 +64,14 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string|max:250',
+            'difficulty' => 'required|in:easy,medium,hard',
+            'completed' => 'required|boolean',
+        ]);
+
+
     }
 
     /**
