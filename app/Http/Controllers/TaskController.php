@@ -62,7 +62,7 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Task $task)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:100',
@@ -71,14 +71,17 @@ class TaskController extends Controller
             'completed' => 'required|boolean',
         ]);
 
+        $task->update();
+        return response()->json($task, 200);
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        //
+      $task->delete();
+      return response()->json('Message', 'Task deleted successfully');
     }
 }
