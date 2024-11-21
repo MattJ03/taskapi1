@@ -25,6 +25,17 @@ class TaskController extends Controller
           });
       }
 
+      if($difficulty) {
+          $query->where('difficulty', $difficulty);
+
+      }
+       if(is_null($completed)) {
+           $query->where('completed', filter_var($completed, FILTER_VALIDATE_BOOLEAN));
+       }
+
+       $tasks = $query->get();
+       return response()->json($tasks);
+
 
     }
 
