@@ -10,10 +10,22 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $task = Task::all();
-        return response()->json($task);
+       $search = $request->input('search');
+       $difficulty = $request->input('difficulty');
+       $completed = $request->input('completed');
+
+      $query = Task::query();
+
+      if($search) {
+          $query->where(function ($q) use ($search) {
+              $q->where('name', 'like', '%$search%')
+                  ->orWhere('description', 'like', '%$search%');
+          });
+      }
+
+
     }
 
     /**
